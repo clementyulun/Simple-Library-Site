@@ -11,7 +11,11 @@ const AuthorSchema = new Schema(
     }
 )
 
-AuthorSchema.virtual('name').get(()=>{return `${this.family_name}, ${this.first_name}`})
-AuthorSchema.virtual('rul').get(()=>{return `/catalog/author${this._id}`})
+AuthorSchema.virtual('name').get(function (){
+    return `${this.family_name}, ${this.first_name}`
+})
+AuthorSchema.virtual('rul').get(function (){
+    return `/catalog/author${this._id}`
+})
 
 module.exports = mongoose.model('Author', AuthorSchema)
