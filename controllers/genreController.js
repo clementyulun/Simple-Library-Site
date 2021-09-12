@@ -21,11 +21,8 @@ exports.genre_create_post = [
     body('name', 'Genre name required').trim().isLength({min:1}).escape(),
     (req, res, next) => {
         const errors = validationResult(req)
-        let genre = new Genre(
-            { name: req.body.name }
-        )
         if(!errors.isEmpty()){
-            res.render('genre_form', {title: 'Create Genre', genre: genre, errors: errors.array()})
+            res.render('genre_form', {title: 'Create Genre', genre: undefined, errors: errors.array()})
             return
         }else{
             Genre.findOne({'name': req.body.name}).exec((err, found_genre)=>{
@@ -33,6 +30,9 @@ exports.genre_create_post = [
                 if(found_genre){
                     res.redirect(found_genre.url)
                 }else{
+                    let genre = new Genre(
+                        { name: req.body.name }
+                    )
                     genre.save((err)=>{
                         if(err){return next(err)}
                         res.redirect(genre.url)
