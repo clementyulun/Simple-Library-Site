@@ -1,8 +1,14 @@
+const { nextTick } = require('async')
 const BookInstance = require('../models/bookinstance')
 
 // Display list of all BookInstances.
 exports.bookinstance_list = (req, res) => {
-    res.send('NOT IMPLEMENTED: BookInstance list')
+    BookInstance.find()
+    .populate('book')
+    .exec((err, result)=>{
+        if(err) return nextTick(err)
+        res.render('bookinstance_list', {title: 'Book Instance List', bookinstance_list: result })
+    })
 }
 
 // Display detail page for a specific BookInstance.
