@@ -1,14 +1,17 @@
 const Book = require('../models/book');
 const Author = require('../models/author');
-const Genre = require('../models/genre');
-const BookInstance = require('../models/bookinstance');
 
 const async = require('async');
 
 
 // Display list of all books.
 exports.book_list = (req, res) => {
-    res.send('NOT IMPLEMENTED: Book list')
+    Book.find({}, 'title author')
+    .populate('author')
+    .exec((err, list_books) => {
+        if(err) return next(err)
+        res.render('book_list', {title: 'Book List', book_list: list_books})
+    })
 }
 
 // Display detail page for a specific book.
