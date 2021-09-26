@@ -3,7 +3,12 @@ const { body, validationResult } = require('express-validator');
 
 // Display list of all Authors.
 exports.author_list = (req, res) => {
-    res.send('NOT IMPLEMENTED: Author list')
+    Author.find()
+    .sort([['family_name', 'ascending']])
+    .exec((err, result) => {
+        if(err) return next(err)
+        res.render('author_list', {title: 'Author List', author_list: result})
+    })
 }
 
 // Display detail page for a specific Author.
