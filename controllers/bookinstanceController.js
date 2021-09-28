@@ -1,4 +1,5 @@
 const { nextTick } = require('async')
+const bookinstance = require('../models/bookinstance')
 const BookInstance = require('../models/bookinstance')
 
 // Display list of all BookInstances.
@@ -13,7 +14,17 @@ exports.bookinstance_list = (req, res) => {
 
 // Display detail page for a specific BookInstance.
 exports.bookinstance_detail = (req, res) => {
-    res.send('NOT IMPLEMENTED: BookInstance detail: ' + req.params.id)
+    BookInstance.findById(req.params.id)
+        .populate('book')
+        .exec((err, results)=>{
+            if(err) return next(err)
+            if(results == null){
+                let err = new Error('Book copy not found')
+                err.status = 404
+                return next(err)
+            } 
+            res.render('bookinstance_detail', {title: 'Copy: ' + results.book.title, bookinstance: results})
+        })     
 }
 
 // Display BookInstance create form on GET.
