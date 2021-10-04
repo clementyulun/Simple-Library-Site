@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var helmet = require('helmet');
+var compression = require('compression');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,6 +17,9 @@ var mongoDB = 'mongodb://127.0.0.1/pratice'
 mongoose.connect(mongoDB)
 var db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error : '))
+
+app.use(helmet());
+app.use(compression()); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
