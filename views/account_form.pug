@@ -1,0 +1,23 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='id_number') #{username_label}
+      input#username.form-control(type='text' name='id_number' required='true' placeholder='Please enter your ID Number' value=(id_number===undefined ? '' : id_number))
+    div.form-group
+      label(for='credential') #{credential_label}
+      input#credential.form-control(type='password' name='credential' required='true' placeholder='Please enter your password')
+    div.form-group
+      label(for='credential_confirm') #{credential_confirm_label}
+      input#credential_confirm.form-control(type='password' name='credential_confirm' required='true' placeholder='Please enter your password again')
+    if errors
+      ul
+        each error in errors
+          li(style='color:red') #{error.msg}
+    if user_exists
+      #{alert('User already exists')}
+    button.btn.btn-primary(type='submit') Create
+      
