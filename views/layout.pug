@@ -11,6 +11,8 @@ html(lang='en')
     div(class='container-fluid')
       div(class='row')
         div(class='col-sm-2')
+          if user 
+            | Hi, #{user}
           block sidebar
             ul(class='sidebar-nav')
               li
@@ -33,6 +35,14 @@ html(lang='en')
                 a(href='/catalog/book/create') Create new book
               li
                 a(href='/catalog/bookinstance/create') Create new book instance (copy)
+              li
+                hr
+              li 
+                a(href='/user/create') Create a new account
+              li 
+                a(href='/user/login') Login
+              li 
+                a(href='/user/info') User Info
 
-        div(class='col-sm-10')
+        div(class='col-sm-8')
           block content

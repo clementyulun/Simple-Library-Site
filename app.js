@@ -4,10 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var helmet = require('helmet');
+var session = require('express-session');
+var flash = require('connect-flash');
 var compression = require('compression');
+var passport = require('passport')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
 var catalogRouter = require('./routes/catalog');
 
 var app = express();
@@ -20,6 +23,16 @@ db.on('error', console.error.bind(console, 'MongoDB connection error : '))
 
 app.use(helmet());
 app.use(compression()); 
+app.use(flash());
+
+
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+app.use(passport.initialize());
+app.use(passport.session())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +45,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/catalog', catalogRouter)
 
 // catch 404 and forward to error handler

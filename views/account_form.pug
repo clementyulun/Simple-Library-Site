@@ -10,14 +10,15 @@ block content
     div.form-group
       label(for='credential') #{credential_label}
       input#credential.form-control(type='password' name='credential' required='true' placeholder='Please enter your password')
-    div.form-group
-      label(for='credential_confirm') #{credential_confirm_label}
-      input#credential_confirm.form-control(type='password' name='credential_confirm' required='true' placeholder='Please enter your password again')
+    if !login_mode
+      div.form-group
+        label(for='credential_confirm') #{credential_confirm_label}
+        input#credential_confirm.form-control(type='password' name='credential_confirm' required='true' placeholder='Please enter your password again')
     if errors
       ul
         each error in errors
           li(style='color:red') #{error.msg}
     if user_exists
       #{alert('User already exists')}
-    button.btn.btn-primary(type='submit') Create
+    button.btn.btn-primary(type='submit') #{login_mode === undefined ? 'Create' : 'Login' }
       

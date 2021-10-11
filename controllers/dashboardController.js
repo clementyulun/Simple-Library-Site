@@ -24,6 +24,7 @@ exports.index = (req, res) => {
             Genre.countDocuments({}, callback);
         }
     }, function(err, results) {
-        res.render('index', { title: 'Local Library Home', error: err, data: results });
-    });
+        console.log(req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : '')
+        res.render('index', { title: 'Local Library Home', error: err, data: results, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
+    })
 }
