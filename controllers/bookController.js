@@ -159,7 +159,6 @@ exports.book_update_post = [
     body('summary', 'Summary must not be empty.').trim().isLength({ min : 1 }).escape(),
     body('isbn', 'ISBN must not be empty.').trim().isLength({ min : 1}).escape(),
     (req, res, next) => {
-        console.log('update book')
         const errors = validationResult(req)
         if(!errors.isEmpty()){
             async.parallel({
