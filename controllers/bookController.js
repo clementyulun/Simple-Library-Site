@@ -36,7 +36,7 @@ exports.book_detail = (req, res, next) => {
             err.status = 404
             return next(err)
         }
-        res.render('book_detail', { title: results.book.title, book: results.book, book_instances: results.book_instance } )
+        res.render('book_detail', { title: results.book.title, book: results.book, book_instances: results.book_instance, user: req.user } )
     })
 }
 
