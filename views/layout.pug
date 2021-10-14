@@ -37,12 +37,19 @@ html(lang='en')
                 a(href='/catalog/bookinstance/create') Create new book instance (copy)
               li
                 hr
-              li 
-                a(href='/user/create') Create a new account
-              li 
-                a(href='/user/login') Login
-              li 
-                a(href='/user/info') User Info
+
+
+              if user
+                li 
+                  a(href='/user/info') User Info
+                li 
+                  a(href='/user/logout') Logout
+              else 
+                li 
+                  a(href='/user/login') Login
+                li 
+                  a(href='/user/create') Create a new account
+
 
         div(class='col-sm-8')
           block content

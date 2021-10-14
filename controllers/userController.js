@@ -119,3 +119,8 @@ exports.user_info_get = (req, res) => {
 exports.user_info_post = (req, res) => {
   res.send('user_info_post NOT IMPLEMENTED')
 }
+
+exports.user_logout = (req, res) => {
+  req.logout()
+  res.redirect('/')
+}

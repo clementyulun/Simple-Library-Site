@@ -24,4 +24,6 @@ router.get('/info', user_controller.user_info_get)
 
 router.post('/info', user_controller.user_info_post)
 
+router.get('/logout', user_controller.user_logout)
+
 module.exports = router;
