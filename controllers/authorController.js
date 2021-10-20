@@ -9,7 +9,7 @@ exports.author_list = (req, res, next) => {
     .sort([['family_name', 'ascending']])
     .exec((err, result) => {
         if(err) return next(err)
-        res.render('author_list', {title: 'Author List', author_list: result})
+        res.render('author_list', {title: 'Author List', author_list: result, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
@@ -30,13 +30,13 @@ exports.author_detail = (req, res, next) => {
             err.status = 404
             return next(err)
         }
-        res.render('author_detail', {title: 'Authoe Detail', author: results.author, author_books: results.authors_books})
+        res.render('author_detail', {title: 'Authoe Detail', author: results.author, author_books: results.authors_books, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
 // Display Author create form on GET.
 exports.author_create_get = (req, res, next) => {
-    res.render('author_form', {title: 'Create Author'})
+    res.render('author_form', {title: 'Create Author', user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
 }
 
 // Handle Author create on POST.
@@ -53,7 +53,7 @@ exports.author_create_post = [
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            res.render('author_form', { title: 'Create Author', author: req.body, errors: errors.array() });
+            res.render('author_form', { title: 'Create Author', author: req.body, errors: errors.array(), user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : '' });
             return;
         }
         else {
@@ -86,7 +86,7 @@ exports.author_delete_get = (req, res, next) => {
         if(results.author == null){
             res.redirect('/catalog/authors')
         }
-        res.render('author_delete', {title: 'Delete Author', author: results.author, author_books: results.authors_books})
+        res.render('author_delete', {title: 'Delete Author', author: results.author, author_books: results.authors_books, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
@@ -102,7 +102,7 @@ exports.author_delete_post = (req, res, next) => {
     }, (err, results) => {
         if(err) return next(err)
         if(results.author_books.length > 0){
-            res.render('author delete', {title: 'Delete Author', author: results.author, author_books: results.author_books})
+            res.render('author delete', {title: 'Delete Author', author: results.author, author_books: results.author_books, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
         }else{
             Author.findByIdAndRemove(req.body.authorid, (err)=>{
                 if(err) return next(err)

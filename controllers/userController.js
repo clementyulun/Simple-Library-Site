@@ -67,13 +67,13 @@ exports.user_create_post = [
     const  errors = validationResult(req).errors
     const id_number = req.body.id_number
     if(errors.length > 0){
-      res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', id_number: id_number, errors: errors})
+      res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', id_number: id_number, errors: errors, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
       return
     }else{
       User.findOne({id_number:id_number}).exec((err, found_user) => {
         if(err) return next(err)
         if(found_user){
-          res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', id_number: id_number, user_exists: true})
+          res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', id_number: id_number, user_exists: true, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
         }else{
           let user = new User({
             id_number: id_number

@@ -12,7 +12,7 @@ exports.book_list = (req, res, next) => {
     .populate('author')
     .exec((err, list_books) => {
         if(err) return next(err)
-        res.render('book_list', {title: 'Book List', book_list: list_books})
+        res.render('book_list', {title: 'Book List', book_list: list_books, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
@@ -51,7 +51,7 @@ exports.book_create_get = (req, res, next) => {
         }
     }, (err, results)=>{
         if(err) return next(err)
-        res.render('book_form', {title: 'Create Book', authors: results.authors, genres: results.genres})
+        res.render('book_form', {title: 'Create Book', authors: results.authors, genres: results.genres, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
@@ -92,7 +92,7 @@ exports.book_create_post = [
                     if(book.genre.includes(e._id)) 
                     e.checked = 'true'
                 })
-                res.render('book_form', {title: 'Create Book', authors: results.authors, genres: results.genres, book: book, errors: errors.array()})
+                res.render('book_form', {title: 'Create Book', authors: results.authors, genres: results.genres, book: book, errors: errors.array(), user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
             })
         }
         else{
@@ -141,7 +141,7 @@ exports.book_update_get = (req, res, next) => {
                 }  
             }    
         })
-        res.render('book_form', {title: 'Update Book',authors: results.authors, genres: results.genres, book: results.book})
+        res.render('book_form', {title: 'Update Book',authors: results.authors, genres: results.genres, book: results.book, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
@@ -178,7 +178,7 @@ exports.book_update_post = [
                         }  
                     }    
                 })
-                res.render('book_form', {title: 'Update Book', authors: results.authors, genres: results.genres, book: book, errors: errors.array()})
+                res.render('book_form', {title: 'Update Book', authors: results.authors, genres: results.genres, book: book, errors: errors.array(), user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
             })
         }
         else{

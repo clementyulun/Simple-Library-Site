@@ -9,13 +9,13 @@ router.get('/', function(req, res, next) {
 })
 
 router.get('/create', (req, res, next)=>{
-  res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password'})
+  res.render('account_form', {title:'Create User', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
 })
 
 router.post('/create', user_controller.user_create_post)
 
 router.get('/login', (req, res, next)=>{
-  res.render('account_form', {title:'Login', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', login_mode:true})
+  res.render('account_form', {title:'Login', username_label:'ID Number', credential_label:'Password', credential_confirm_label:'Confirm Password', login_mode:true, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
 })
 
 router.post('/login', user_controller.user_login_post)

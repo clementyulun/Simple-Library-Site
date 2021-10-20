@@ -10,12 +10,12 @@ exports.bookinstance_list = (req, res) => {
     .populate('book')
     .exec((err, result)=>{
         if(err) return nextTick(err)
-        res.render('bookinstance_list', {title: 'Book Instance List', bookinstance_list: result })
+        res.render('bookinstance_list', {title: 'Book Instance List', bookinstance_list: result, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : '' })
     })
 }
 
 // Display detail page for a specific BookInstance.
-exports.bookinstance_detail = (req, res) => {
+exports.bookinstance_detail = (req, res, next) => {
     BookInstance.findById(req.params.id)
         .populate('book')
         .exec((err, results)=>{
@@ -25,7 +25,7 @@ exports.bookinstance_detail = (req, res) => {
                 err.status = 404
                 return next(err)
             } 
-            res.render('bookinstance_detail', {title: 'Copy: ' + results.book.title, bookinstance: results})
+            res.render('bookinstance_detail', {title: 'Copy: ' + results.book.title, bookinstance: results, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
         })     
 }
 
@@ -34,9 +34,7 @@ exports.bookinstance_create_get = (req, res) => {
     Book.find({}, "title").exec((err, results) => {
       if (err) return next(err);
       res.render("bookinstance_form", {
-        title: "Create BookInstance",
-        book_list: results,
-      })
+        title: "Create BookInstance", book_list: results, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
   }
   
@@ -51,10 +49,7 @@ exports.bookinstance_create_get = (req, res) => {
       if (!errors.isEmpty()) {
         Book.find({}, "title").exec((err, results) => {
           if (err) return next(err)
-          res.render("bookinstance_form", {
-            title: "Create BookInstance",
-            book_list: results,
-          })
+          res.render("bookinstance_form", {title: "Create BookInstance", book_list: results, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
         })
       } else {
         let bookinstance = new BookInstance({

@@ -4,17 +4,17 @@ const Book = require('../models/book')
 const async = require('async')
 
 // Display list of all Genre.
-exports.genre_list = (req, res) => {
+exports.genre_list = (req, res, next) => {
     Genre.find()
     .sort([['name', 'ascending']])
     .exec((err, result)=>{
         if(err) return next(err)
-        res.render('genre_list', {title: 'Genre List', genre_list: result})
+        res.render('genre_list', {title: 'Genre List', genre_list: result, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
 // Display detail page for a specific Genre.
-exports.genre_detail = (req, res) => {
+exports.genre_detail = (req, res, next) => {
     async.parallel({
         genre: (callback)=>{
             Genre.findById(req.params.id).exec(callback)
@@ -29,13 +29,13 @@ exports.genre_detail = (req, res) => {
             err.status = 404
             return next(err)
         }
-        res.render('genre_detail', {title: 'Genre Detail', genre: result.genre, genre_books: result.genre_books})
+        res.render('genre_detail', {title: 'Genre Detail', genre: result.genre, genre_books: result.genre_books, user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
     })
 }
 
 // Display Genre create form on GET.
 exports.genre_create_get = (req, res, next) => {
-    res.render('genre_form', {title: 'Create Genre'})
+    res.render('genre_form', {title: 'Create Genre', user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
 }
 
 // Handle Genre create on POST.
@@ -44,7 +44,7 @@ exports.genre_create_post = [
     (req, res, next) => {
         const errors = validationResult(req)
         if(!errors.isEmpty()){
-            res.render('genre_form', {title: 'Create Genre', genre: undefined, errors: errors.array()})
+            res.render('genre_form', {title: 'Create Genre', genre: undefined, errors: errors.array(), user: req.user ? (req.user.nickname==='' ? req.user.nickname : 'New User') : ''})
             return
         }else{
             Genre.findOne({'name': req.body.name}).exec((err, found_genre)=>{
